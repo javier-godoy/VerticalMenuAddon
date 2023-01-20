@@ -69,6 +69,7 @@ public class VerticalMenu extends Component implements HasSize {
     }
 
 	private void addMenu(Section s, int index) {
+		var x = this;
 		s.getElement().setAttribute("onclick", "goToPage(" + (index - 1) + ")");
 		s.addClassName("class" + index);
 		s.addClickListener(ev -> {
