@@ -58,6 +58,7 @@ public class VerticalMenu extends Component implements HasSize {
 
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
+		var x = this;
 		super.onAttach(attachEvent);
 		getUI().ifPresent(ui -> ui.getElement().getClassList().add("vertical-menu"));
 	}
