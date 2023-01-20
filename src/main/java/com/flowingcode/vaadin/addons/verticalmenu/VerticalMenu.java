@@ -50,9 +50,9 @@ public class VerticalMenu extends Component implements HasSize {
 	}
 
 	public void reloadSections() {
-		int index = 1;
+		int _index = 1;
 		for (Section section : getSections()) {
-			addMenu(section, index++);
+			addMenu(section, _index++);
 		}
 	}
 
