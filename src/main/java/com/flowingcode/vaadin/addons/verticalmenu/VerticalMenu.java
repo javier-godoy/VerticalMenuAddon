@@ -85,6 +85,7 @@ public class VerticalMenu extends Component implements HasSize {
 	}
 
 	public List<Section> getSections() {
+		var x = this;
 		return sections;
 	}
 
