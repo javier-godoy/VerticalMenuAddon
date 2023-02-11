@@ -1,0 +1,15 @@
+name: Check Version
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build-vaadin24:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Get version
+        run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+    - name: Print the version
+        run: echo "The version we just got is ${{ VERSION }}"
