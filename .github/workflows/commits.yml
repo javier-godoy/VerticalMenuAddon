@@ -18,7 +18,10 @@ jobs:
     
     - name: Print version
       run: echo "Version is ${{ env.VERSION }}"
-       
+     
+    - name: Print version
+      run: echo "Semver level is ${{ fromJSON(env.semver_level) }}"
+      
     - name: Check snapshot
       if: ${{ !endsWith( env.VERSION , '-SNAPSHOT' ) }}
       uses: actions/github-script@v3
