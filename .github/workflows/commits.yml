@@ -25,30 +25,40 @@ jobs:
       with: 
           script: core.setFailed('Version is not SNAPSHOT')
 
-    - name: Check if requires minor
-      if: ${{ fromJSON(env.SEMVER_LEVEL)==2 && !startsWith( env.VERSION, '0.' ) && !endsWith( env.VERSION, '.0-SNAPSHOT' ) }}
-      run: echo "REQUIRES_MINOR=true" >> $GITHUB_ENV
-
-    - name: Check if requires major
+    - name: Check if PR requires a new major version
       if: ${{ fromJSON(env.SEMVER_LEVEL)==3 && !startsWith( env.VERSION, '0.' ) && !endsWith( env.VERSION, '.0.0-SNAPSHOT' ) }}
       run: echo "REQUIRES_MAJOR=true" >> $GITHUB_ENV
 
-    - name: Test if requires minor
-      if: ${{ env.REQUIRES_MINOR }}
-      run: echo "REQUIRES_MINOR"
-
-    - name: Test if requires major
+    - name: Require major version
       if: ${{ env.REQUIRES_MAJOR }}
-      run: echo "REQUIRES_MAJOR"
+      run: touch requires_major
 
-    - name: Fail on breaking changes
-      if: ${{ fromJSON(env.SEMVER_LEVEL)==3 && !endsWith( env.VERSION , '.0.0-SNAPSHOT' ) && !startsWith( env.VERSION , '0.' ) }}
+    - uses: actions/upload-artifact@v3
+      if: ${{ env.REQUIRES_MAJOR }}
+      with:
+          name: requires_major
+
+    - name: Fail on required major version
+      if: ${{ env.REQUIRES_MAJOR }}
       uses: actions/github-script@v3
       with: 
           script: core.setFailed("Version ${{ env.VERSION }} cannot contain breaking changes.")
+
+    - name: Check if PR requires a new minor version
+      if: ${{ fromJSON(env.SEMVER_LEVEL)==2 && !startsWith( env.VERSION, '0.' ) && !endsWith( env.VERSION, '.0-SNAPSHOT' ) }}
+      run: echo "REQUIRES_MINOR=true" >> $GITHUB_ENV
+
+    - name: Require minor version
+      if: ${{ env.REQUIRES_MINOR }}
+      run: touch requires_minor
     
-    - name: Fail on new features
-      if: ${{ fromJSON(env.SEMVER_LEVEL)==2 && !endsWith( env.VERSION , '.0-SNAPSHOT' ) && !startsWith( env.VERSION , '0.' ) }}
+    - uses: actions/upload-artifact@v3
+      if: ${{ env.REQUIRES_MINOR }}
+      with:
+          name: requires_minor
+          
+    - name: Fail on required minor version
+      if: ${{ env.REQUIRES_MINOR }}    
       uses: actions/github-script@v3
       with: 
           script: core.setFailed("Version ${{ env.VERSION }} cannot contain new features")       
