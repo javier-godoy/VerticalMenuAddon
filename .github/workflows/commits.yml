@@ -15,6 +15,9 @@ jobs:
     
     - name: Get version
       run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+    
+    - name: Print version
+      run: echo "Semver level is ${{ fromJSON(env.SEMVER_LEVEL) }}"
       
     - name: Check snapshot version
       if: ${{ !endsWith( env.VERSION , '-SNAPSHOT' ) }}
