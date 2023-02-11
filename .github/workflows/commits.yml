@@ -27,7 +27,7 @@ jobs:
 
     - name: Check if PR requires a new major version
       if: ${{ fromJSON(env.SEMVER_LEVEL)==3 && !startsWith( env.VERSION, '0.' ) && !endsWith( env.VERSION, '.0.0-SNAPSHOT' ) }}
-      run: echo "REQUIRES_MAJOR=true" >> $GITHUB_ENV
+      run: echo "REQUIRES_MAJOR=Version ${{ env.VERSION }} cannot contain breaking changes. Please update the POM file to the next major version" >> $GITHUB_ENV
 
     - name: Require major version
       if: ${{ env.REQUIRES_MAJOR }}
@@ -47,7 +47,7 @@ jobs:
 
     - name: Check if PR requires a new minor version
       if: ${{ fromJSON(env.SEMVER_LEVEL)==2 && !startsWith( env.VERSION, '0.' ) && !endsWith( env.VERSION, '.0-SNAPSHOT' ) }}
-      run: echo "REQUIRES_MINOR=true" >> $GITHUB_ENV
+      run: echo "REQUIRES_MINOR=Version ${{ env.VERSION }} cannot contain new features. Please update the POM file to the next minor version." >> $GITHUB_ENV
 
     - name: Require minor version
       if: ${{ env.REQUIRES_MINOR }}
