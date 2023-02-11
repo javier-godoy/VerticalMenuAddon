@@ -22,6 +22,22 @@ jobs:
       with: 
           script: core.setFailed('Version is not SNAPSHOT')
 
+    - name: Check if requires minor
+      if: ${{ fromJSON(env.SEMVER_LEVEL)==2 && !startsWith( env.VERSION, '0.' ) && !endsWith( env.VERSION, '.0-SNAPSHOT' ) }}
+      run: echo "REQUIRES_MINOR=true" >> $GITHUB_ENV
+
+    - name: Check if requires major
+      if: ${{ fromJSON(env.SEMVER_LEVEL)==3 && !startsWith( env.VERSION, '0.' ) && !endsWith( env.VERSION, '.0.0-SNAPSHOT' ) }}
+      run: echo "REQUIRES_MAJOR=true" >> $GITHUB_ENV
+
+    - name: Test if requires minor
+      if: ${{ env.REQUIRES_MINOR ) }}
+      run: echo "REQUIRES_MINOR"
+		
+    - name: Test if requires major
+      if: ${{ env.REQUIRES_MAJOR ) }}
+      run: echo "REQUIRES_MAJOR"
+    
     - name: Fail on breaking changes
       if: ${{ fromJSON(env.SEMVER_LEVEL)==3 && !endsWith( env.VERSION , '.0.0-SNAPSHOT' ) && !startsWith( env.VERSION , '0.' ) }}
       uses: actions/github-script@v3
