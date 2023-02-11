@@ -20,7 +20,7 @@ jobs:
       run: echo "Version is ${{ env.VERSION }}"
      
     - name: Print version
-      run: echo "Semver level is ${{ fromJSON(env.semver_level) }}"
+      run: echo "Semver level is ${{ fromJSON(env.SEMVER_LEVEL) }}"
       
     - name: Check snapshot
       if: ${{ !endsWith( env.VERSION , '-SNAPSHOT' ) }}
