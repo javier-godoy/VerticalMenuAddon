@@ -41,7 +41,7 @@ jobs:
 
     - name: Fail on required major version
       if: ${{ env.REQUIRES_MAJOR }}
-      uses: actions/github-script@v3
+      uses: actions/github-script@v6
       with: 
           script: core.setFailed("Version ${{ env.VERSION }} cannot contain breaking changes.")
 
@@ -61,6 +61,6 @@ jobs:
           
     - name: Fail on required minor version
       if: ${{ env.REQUIRES_MINOR }}    
-      uses: actions/github-script@v3
+      uses: actions/github-script@v6
       with: 
           script: core.setFailed("Version ${{ env.VERSION }} cannot contain new features")       
