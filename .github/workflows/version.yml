@@ -8,8 +8,14 @@ jobs:
   check-version:
     runs-on: ubuntu-latest
     steps:
+    
     - uses: actions/checkout@v3
+    
     - name: Get version
       run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-    - name: Print the version
-      run: echo "The version we just got is ${{ env.VERSION }}"
+      
+    - name: Check snapshot
+      if: ${{ !contains( version , "-SNAPSHOT" ) }}
+      uses: actions/github-script@v3
+      with: 
+          script: core.setFailed('Version is not SNAPSHOT')
