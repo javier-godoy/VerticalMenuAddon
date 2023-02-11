@@ -1,11 +1,11 @@
-name: Check Version
+name: Check Commits
 
 on:
   pull_request:
     branches: [ "master" ]
 
 jobs:
-  check-version:
+  check-commits:
     runs-on: ubuntu-latest
     steps:
     
