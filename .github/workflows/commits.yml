@@ -35,6 +35,7 @@ jobs:
       if: ${{ fromJSON(env.SEMVER_LEVEL)>=2 && !endsWith( env.VERSION , '.0-SNAPSHOT' ) && !startsWith( env.VERSION , '0.' ) }}
       uses: ntsd/auto-request-changes-action@v2
       with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
           comment-body: "Version ${{ env.VERSION }} cannot contain new features. Please update version in POM file to the next minor."
           
     - name: Fail on requested minor update
