@@ -29,9 +29,9 @@ jobs:
           script: core.setFailed('Version is not SNAPSHOT')
           
     - name: Check minor
-      if: ${{ !endsWith( env.VERSION , '.0-SNAPSHOT' ) && !startsWith( env.VERSION , '0.' ) }}
+      if: ${{ fromJSON(env.SEMVER_LEVEL)>=2 && !endsWith( env.VERSION , '.0-SNAPSHOT' ) && !startsWith( env.VERSION , '0.' ) }}
       run: echo "Version ${{ env.VERSION }} cannot contain new features"  
 
     - name: Check major
-      if: ${{ !endsWith( env.VERSION , '.0.0-SNAPSHOT' ) && !startsWith( env.VERSION , '0.' ) }}
+      if: ${{ fromJSON(env.SEMVER_LEVEL)>=3 && !endsWith( env.VERSION , '.0.0-SNAPSHOT' ) && !startsWith( env.VERSION , '0.' ) }}
       run: echo "Version ${{ env.VERSION }} cannot contain breaking changes"  
