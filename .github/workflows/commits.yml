@@ -24,8 +24,12 @@ jobs:
           
     - name: Check features
       if: ${{ fromJSON(env.SEMVER_LEVEL)>=2 && !endsWith( env.VERSION , '.0-SNAPSHOT' ) && !startsWith( env.VERSION , '0.' ) }}
-      run: echo "Version ${{ env.VERSION }} cannot contain new features"  
+      uses: actions/github-script@v3
+      with: 
+          script: core.setFailed("Version ${{ env.VERSION }} cannot contain new features")
 
     - name: Check breaking changes
       if: ${{ fromJSON(env.SEMVER_LEVEL)>=3 && !endsWith( env.VERSION , '.0.0-SNAPSHOT' ) && !startsWith( env.VERSION , '0.' ) }}
-      run: echo "Version ${{ env.VERSION }} cannot contain breaking changes"  
+      uses: actions/github-script@v3
+      with: 
+          script: core.setFailed("Version ${{ env.VERSION }} cannot contain breaking changes")
