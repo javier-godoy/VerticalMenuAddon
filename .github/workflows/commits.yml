@@ -1,9 +1,5 @@
 name: Check Commits
-
 on: pull_request
-
-permissions:
-  pull-requests: write
 
 jobs:
   check-commits:
