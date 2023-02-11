@@ -1,6 +1,6 @@
 name: Check Commits
 
-on: pull_request_target
+on: pull_request
 
 permissions:
   pull-requests: write
@@ -26,27 +26,13 @@ jobs:
       with: 
           script: core.setFailed('Version is not SNAPSHOT')
 
-    - name: Request major version update
-      if: ${{ fromJSON(env.SEMVER_LEVEL)==3 && !endsWith( env.VERSION , '.0.0-SNAPSHOT' ) && !startsWith( env.VERSION , '0.' ) }}
-      uses: ntsd/auto-request-changes-action@v2
-      with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-          comment-body: "Version ${{ env.VERSION }} cannot contain breaking changes. Please update the POM file to the next major version."
-
-    - name: Fail on requested major update
+    - name: Fail on breaking changes
       if: ${{ fromJSON(env.SEMVER_LEVEL)==3 && !endsWith( env.VERSION , '.0.0-SNAPSHOT' ) && !startsWith( env.VERSION , '0.' ) }}
       uses: actions/github-script@v3
       with: 
           script: core.setFailed("Version ${{ env.VERSION }} cannot contain breaking changes.")
     
-    - name: Request minor version update
-      if: ${{ fromJSON(env.SEMVER_LEVEL)==2 && !endsWith( env.VERSION , '.0-SNAPSHOT' ) && !startsWith( env.VERSION , '0.' ) }}
-      uses: ntsd/auto-request-changes-action@v2
-      with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-          comment-body: "Version ${{ env.VERSION }} cannot contain new features. Please update the POM file to the next minor version."
-          
-    - name: Fail on requested minor update
+    - name: Fail on new features
       if: ${{ fromJSON(env.SEMVER_LEVEL)==2 && !endsWith( env.VERSION , '.0-SNAPSHOT' ) && !startsWith( env.VERSION , '0.' ) }}
       uses: actions/github-script@v3
       with: 
