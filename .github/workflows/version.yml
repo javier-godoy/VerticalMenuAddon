@@ -18,15 +18,15 @@ jobs:
       run: echo "Version is ${{ env.VERSION }}"
         
     - name: Check snapshot
-      if: ${{ !contains( env.VERSION , '-SNAPSHOT' ) }}
+      if: ${{ !endsWith( env.VERSION , '-SNAPSHOT' ) }}
       uses: actions/github-script@v3
       with: 
           script: core.setFailed('Version is not SNAPSHOT')
           
     - name: Check minor
-      if: ${{ !contains( env.VERSION , '.0-SNAPSHOT' ) }}
+      if: ${{ !endsWith( env.VERSION , '.0-SNAPSHOT' ) }}
       run: echo "Version ${{ env.VERSION }} cannot contain new features"  
 
     - name: Check major
-      if: ${{ !contains( env.VERSION , '.0.0-SNAPSHOT' ) }}
+      if: ${{ !endsWith( env.VERSION , '.0.0-SNAPSHOT' ) }}
       run: echo "Version ${{ env.VERSION }} cannot contain breaking changes"  
