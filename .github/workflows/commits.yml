@@ -31,11 +31,11 @@ jobs:
       run: echo "REQUIRES_MAJOR=true" >> $GITHUB_ENV
 
     - name: Test if requires minor
-      if: ${{ env.REQUIRES_MINOR ) }}
+      if: ${{ env.REQUIRES_MINOR }}
       run: echo "REQUIRES_MINOR"
 
     - name: Test if requires major
-      if: ${{ env.REQUIRES_MAJOR ) }}
+      if: ${{ env.REQUIRES_MAJOR }}
       run: echo "REQUIRES_MAJOR"
 
     - name: Fail on breaking changes
