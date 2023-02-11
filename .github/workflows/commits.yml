@@ -36,3 +36,9 @@ jobs:
       uses: actions/github-script@v3
       with: 
           script: core.setFailed("Version ${{ env.VERSION }} cannot contain new features")
+
+    - name: Check features
+      if: ${{ fromJSON(env.SEMVER_LEVEL)>=2 && !endsWith( env.VERSION , '.0-SNAPSHOT' ) && !startsWith( env.VERSION , '0.' ) }}
+      uses: ntsd/auto-request-changes-action@v2
+      with:
+          comment-body: "Version ${{ env.VERSION }} cannot contain new features"         
