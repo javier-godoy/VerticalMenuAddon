@@ -24,47 +24,15 @@ jobs:
       uses: actions/github-script@v3
       with: 
           script: core.setFailed('Version is not SNAPSHOT')
-
-    - name: Check if PR requires a new major version
-      if: ${{ fromJSON(env.SEMVER_LEVEL)==3 && !startsWith( env.VERSION, '0.' ) && !endsWith( env.VERSION, '.0.0-SNAPSHOT' ) }}
-      run: echo "REQUIRES_MAJOR=Version ${{ env.VERSION }} cannot contain breaking changes. Please update the POM file to the next major version" >> $GITHUB_ENV
-
-    - name: Require major version
-      if: ${{ env.REQUIRES_MAJOR }}
-      env: 
-        REQUIRES_MAJOR:  ${{ env.REQUIRES_MAJOR }}
-      run: echo $REQUIRES_MAJOR >> requires_major
-
-    - uses: actions/upload-artifact@v3
-      if: ${{ env.REQUIRES_MAJOR }}
-      with:
-          name: requires_major
-          path: ./requires_major
-
+    
     - name: Fail on required major version
-      if: ${{ env.REQUIRES_MAJOR }}
+      if: ${{ fromJSON(env.SEMVER_LEVEL)==3 && !startsWith( env.VERSION, '0.' ) && !endsWith( env.VERSION, '.0.0-SNAPSHOT' ) }}
       uses: actions/github-script@v6
       with: 
           script: core.setFailed("Version ${{ env.VERSION }} cannot contain breaking changes.")
-
-    - name: Check if PR requires a new minor version
-      if: ${{ fromJSON(env.SEMVER_LEVEL)==2 && !startsWith( env.VERSION, '0.' ) && !endsWith( env.VERSION, '.0-SNAPSHOT' ) }}
-      run: echo "REQUIRES_MINOR=Version ${{ env.VERSION }} cannot contain new features. Please update the POM file to the next minor version." >> $GITHUB_ENV
-
-    - name: Require minor version
-      if: ${{ env.REQUIRES_MINOR }}
-      env: 
-        REQUIRES_MINOR:  ${{ env.REQUIRES_MINOR }}
-      run: echo $REQUIRES_MINOR >> requires_minor
-    
-    - uses: actions/upload-artifact@v3
-      if: ${{ env.REQUIRES_MINOR }}
-      with:
-          name: requires_minor
-          path: ./requires_minor
           
     - name: Fail on required minor version
-      if: ${{ env.REQUIRES_MINOR }}    
+      if: ${{ fromJSON(env.SEMVER_LEVEL)==2 && !startsWith( env.VERSION, '0.' ) && !endsWith( env.VERSION, '.0-SNAPSHOT' ) }}
       uses: actions/github-script@v6
       with: 
           script: core.setFailed("Version ${{ env.VERSION }} cannot contain new features")       
