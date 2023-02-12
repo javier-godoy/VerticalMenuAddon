@@ -31,7 +31,9 @@ jobs:
 
     - name: Require major version
       if: ${{ env.REQUIRES_MAJOR }}
-      run: touch requires_major
+      env: 
+        REQUIRES_MAJOR:  ${{ env.REQUIRES_MAJOR }}
+      run: echo $REQUIRES_MAJOR >> requires_major
 
     - uses: actions/upload-artifact@v3
       if: ${{ env.REQUIRES_MAJOR }}
@@ -51,7 +53,9 @@ jobs:
 
     - name: Require minor version
       if: ${{ env.REQUIRES_MINOR }}
-      run: touch requires_minor
+      env: 
+        REQUIRES_MINOR:  ${{ env.REQUIRES_MINOR }}
+      run: echo $REQUIRES_MINOR >> requires_minor
     
     - uses: actions/upload-artifact@v3
       if: ${{ env.REQUIRES_MINOR }}
